@@ -3,7 +3,7 @@ from robomaster import robot
 def main():
     # Paramètres de base
     robot_ip = "192.168.2.1"  # Adaptez si nécessaire
-    local_audio_file = "a.wav"
+    local_audio_file = "alert.wav"
     remote_audio_file = local_audio_file 
 
     # 2. Lecture du fichier via le SDK
