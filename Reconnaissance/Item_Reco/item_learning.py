@@ -80,7 +80,9 @@ cv2.setMouseCallback("Apprentissage", draw_polygon)
 
 print("Appuie sur 'l' pour lancer l'apprentissage | 'q' pour quitter")
 
-while True:
+page_closed = False
+
+while not page_closed:
     # Selon le mode, utiliser soit l'image figée, soit une image lue en direct depuis le robot
     if mode == "draw" and freeze_frame is not None:
         display = freeze_frame.copy()
