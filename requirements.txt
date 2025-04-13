@@ -1,4 +1,3 @@
-
 numpy
 opencv-python-headless
 tflite-runtime
@@ -6,3 +5,4 @@ facenet-pytorch
 scikit-learn
 robomaster
 pyttsx3
+vosk

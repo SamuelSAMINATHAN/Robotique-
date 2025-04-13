@@ -6,9 +6,9 @@ print("Appuie sur 'q' pour quitter.")
 
 # === Initialisation du robot et de la caméra ===
 ep_robot = robot.Robot()
-ep_robot.initialize(conn_type="sta")  # 'sta' pour mode Wi-Fi station ; adapter si nécessaire
+ep_robot.initialize()  # Initialise le robot en mode Wi-Fi station
 ep_camera = ep_robot.camera
-ep_camera.start_video_stream(display=False, resolution='720p', fps=30)
+ep_camera.start_video_stream(display=False, resolution='720p')  # Démarre le flux vidéo
 
 while True:
     # Lire l'image depuis la caméra du robot
@@ -19,20 +19,20 @@ while True:
     display = frame.copy()
     h, w = frame.shape[:2]
 
-    # Zone centrale (ici, 50% de la taille minimale de l'image)
+    # Zone centrale (50% de la taille minimale de l'image)
     size = int(min(h, w) * 0.5)
     x = (w - size) // 2
     y = (h - size) // 2
-    roi = frame[y:y + size, x:x + size]
+    roi = frame[y:y + size, x:x + size]  # Définir la région d'intérêt (ROI)
 
-    # Conversion de la zone d'intérêt en HSV et extraction de la teinte
+    # Conversion de la ROI en HSV et extraction de la teinte
     hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
     hue = hsv[:, :, 0]
 
     # Calcul de la moyenne des teintes
     avg_hue = int(np.mean(hue))
 
-    # Détermination simple de la couleur dominante en fonction de l'hue moyen
+    # Détermination de la couleur dominante en fonction de la teinte moyenne
     if avg_hue < 10 or avg_hue > 160:
         color_name = "Rouge"
         color = (0, 0, 255)
@@ -55,13 +55,13 @@ while True:
         color_name = "Inconnu"
         color = (255, 255, 255)
 
-    # Affichage de la zone centrale avec le rectangle et l'information de couleur
+    # Affichage de la zone centrale avec le rectangle et la couleur dominante
     cv2.rectangle(display, (x, y), (x + size, y + size), color, 2)
     cv2.putText(display, f"Couleur dominante : {color_name} (hue={avg_hue})",
                 (x + 5, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
 
     cv2.imshow("Couleur dominante (centre)", display)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'):  # Quitter avec 'q'
         break
 
 # Libération des ressources

@@ -1,4 +1,5 @@
 venv
 Item_Reco_test
 objects_efficientnet
-models/
+models/*
+objects_efficientnet.pkl

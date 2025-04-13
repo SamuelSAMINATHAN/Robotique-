@@ -1,19 +1,3 @@
-# -*-coding:utf-8-*-
-# Copyright (c) 2020 DJI.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License in the file LICENSE.txt or at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-
 import cv2
 import robomaster
 from robomaster import robot
@@ -21,7 +5,11 @@ from robomaster import vision
 
 
 class RobotInfo:
-
+    """
+    Classe pour représenter les informations d'un robot détecté.
+    - x, y : coordonnées du centre.
+    - w, h : largeur et hauteur.
+    """
     def __init__(self, x, y, w, h):
         self._x = x
         self._y = y
@@ -45,6 +33,10 @@ robots = []
 
 
 def on_detect_person(person_info):
+    """
+    Callback appelé lorsqu'un robot est détecté.
+    - person_info : liste des coordonnées des robots détectés.
+    """
     number = len(person_info)
     robots.clear()
     for i in range(0, number):
@@ -66,11 +58,12 @@ if __name__ == '__main__':
     for i in range(0, 500):
         img = ep_camera.read_cv2_image(strategy="newest", timeout=0.5)
         for j in range(0, len(robots)):
-            cv2.rectangle(img, robots[j].pt1, robots[j].pt2, (255, 255, 255))
+            cv2.rectangle(img, robots[j].pt1, robots[j].pt2, (255, 255, 255))  # Dessine un rectangle autour du robot
         cv2.imshow("robots", img)
         cv2.waitKey(1)
-    cv2.destroyAllWindows()
+
+    # Libération des ressources
     result = ep_vision.unsub_detect_info(name="robot")
-    cv2.destroyAllWindows()
     ep_camera.stop_video_stream()
     ep_robot.close()
+    cv2.destroyAllWindows()

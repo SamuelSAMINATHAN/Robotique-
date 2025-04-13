@@ -4,6 +4,12 @@ import tkinter as tk
 from tkinter import filedialog, simpledialog, messagebox
 
 def modifier_volume_audio(fichier_entree, facteur_volume, fichier_sortie):
+    """
+    Modifie le volume d'un fichier audio.
+    - fichier_entree : chemin du fichier audio d'entrée.
+    - facteur_volume : facteur de modification du volume (ex : 1.5 pour +50%).
+    - fichier_sortie : chemin du fichier audio de sortie.
+    """
     if not os.path.exists(fichier_entree):
         messagebox.showerror("Erreur", f"Fichier introuvable : {fichier_entree}")
         return
@@ -26,12 +32,16 @@ def modifier_volume_audio(fichier_entree, facteur_volume, fichier_sortie):
     else:
         messagebox.showerror("Erreur", f"Erreur pendant l'exécution de ffmpeg.\n\n{result.stderr}")
 
-
 def lancer_interface():
+    """
+    Lance une interface graphique pour :
+    - Sélectionner un fichier audio.
+    - Entrer un facteur de volume.
+    - Choisir un emplacement pour le fichier modifié.
+    """
     root = tk.Tk()
     root.withdraw()  # Masquer la fenêtre principale
 
-    # Choisir fichier d'entrée
     fichier_entree = filedialog.askopenfilename(
         title="Choisir le fichier audio d'entrée",
         filetypes=[("Fichiers WAV", "*.wav"), ("Tous les fichiers", "*.*")]
@@ -39,7 +49,6 @@ def lancer_interface():
     if not fichier_entree:
         return
 
-    # Demander le facteur de volume
     facteur_volume = simpledialog.askfloat(
         "Facteur de volume",
         "Entrez le facteur de volume (ex: 1.5 pour +50%)",
@@ -48,7 +57,6 @@ def lancer_interface():
     if facteur_volume is None:
         return
 
-    # Choisir emplacement de sortie
     fichier_sortie = filedialog.asksaveasfilename(
         title="Enregistrer le fichier modifié",
         defaultextension=".wav",
@@ -57,7 +65,6 @@ def lancer_interface():
     if not fichier_sortie:
         return
 
-    # Lancer la modification
     modifier_volume_audio(fichier_entree, facteur_volume, fichier_sortie)
 
 if __name__ == "__main__":
